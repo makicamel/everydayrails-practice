@@ -19,4 +19,12 @@ RSpec.describe "ProjectsApi", type: :request do
     json = JSON.parse(response.body)
     expect(json["name"]).to eq "Second sample project"
   end
+  it "creates a project" do
+    user = create(:user)
+    user_params = { user_email: user.email, user_token: user.authentication_token }
+    project_params = attributes_for(:project)
+
+    post api_projects_path, params: { **user_params, project: project_params }
+    expect(response).to have_http_status 200
+  end
 end
